@@ -48,7 +48,7 @@ export const MultimediaVideo: React.FC = () => {
         <AbsoluteFill className="app">
             <NoiseBackground/>
             
-            <Html5Audio src={staticFile('/music/Presentation.mp3')} trimBefore={150} />
+            <Html5Audio src={staticFile('/music/Presentation.mp3')} trimBefore={150} volume={0.2} />
             <PresentationLogo outroStart={outroStartFrame} />
 
 
