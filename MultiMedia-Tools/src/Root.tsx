@@ -1,25 +1,35 @@
 import React from 'react';
 import {Composition} from 'remotion';
-import MainVideo from './MainVideo';
+import MainVideo from "./MainVideo";
+import {AudioSlide, ImagesSlide, VideoSlide, ModelingSlide} from './components/Videos';
 
-// We'll choose fps = 30 as composition fps. MainVideo computes internal timings using useVideoConfig().fps
-// durationInFrames is computed with reference fps=30 to cover default total time.
-// If you change fps in the Composition, Remotion UI expects durationInFrames to be updated accordingly.
-// The MainVideo itself will scale animations based on actual fps.
+export type Durations = {
+    zoomin: number;
+    zoomout: number;
+    reset: number;
+    audio: number;
+    image: number;
+    video: number;
+    modeling: number;
+    total: number;
+    outro: number;
+};
+
+
 const FPS = 30;
+const Durations: Durations = {
+    zoomin: 1.5,
+    reset: 0.5,
+    zoomout: 1.5,
+    audio: 14.5,
+    image: 14.5,
+    video: 14.5,
+    modeling: 16.5,
+    outro: 5,
+    total: 0,
+};
 
-// basic timing constants (seconds) used to compute a default duration
-const INTRO_SEC = 1;
-const GRID_PAUSE_SEC = 0.6;
-const ZOOM_IN_SEC = 0.6;
-const EXPLAIN_SEC = 3.0;
-const ZOOM_OUT_SEC = 0.6;
-const OUTRO_VISIBLE_SEC = 2.5;
-const FADE_SEC = 2;
-
-const SLIDE_SEC = ZOOM_IN_SEC + EXPLAIN_SEC + ZOOM_OUT_SEC;
-const TOTAL_SEC =
-    INTRO_SEC + GRID_PAUSE_SEC + SLIDE_SEC * 4 + OUTRO_VISIBLE_SEC + FADE_SEC;
+Durations.total = Durations.audio + Durations.image + Durations.video + Durations.modeling + Durations.outro + 4 * (Durations.zoomin + Durations.zoomout + Durations.reset);
 
 export const RemotionRoot: React.FC = () => {
     return (
@@ -27,13 +37,53 @@ export const RemotionRoot: React.FC = () => {
             <Composition
                 id="MultimediaTools"
                 component={MainVideo}
-                durationInFrames={Math.round(TOTAL_SEC * FPS)}
+                defaultProps={Durations}
+                durationInFrames={Durations.total! * FPS}
                 fps={FPS}
                 width={1920}
                 height={1080}
             />
+            
+            <Composition
+                id="AudioSlide"
+                component={AudioSlide}
+                defaultProps={{isSpotlighted: true}}
+                durationInFrames={Durations.audio * FPS}
+                fps={FPS}
+                width={960}
+                height={540}
+            />
+
+            <Composition
+                id="ImagesSlide"
+                component={ImagesSlide}
+                defaultProps={{isSpotlighted: true}}
+                durationInFrames={Durations.image * FPS}
+                fps={FPS}
+                width={960}
+                height={540}
+            />
+
+            <Composition
+                id="VideoSlide"
+                component={VideoSlide}
+                defaultProps={{isSpotlighted: true}}
+                durationInFrames={Durations.video * FPS}
+                fps={FPS}
+                width={960}
+                height={540}
+            />
+
+            <Composition
+                id="ModelingSlide"
+                component={ModelingSlide}
+                defaultProps={{isSpotlighted: true}}
+                durationInFrames={Durations.modeling * FPS}
+                fps={FPS}
+                width={960}
+                height={540}
+            />
+
         </>
     );
 };
-
-export default RemotionRoot;

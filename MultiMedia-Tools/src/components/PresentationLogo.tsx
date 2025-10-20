@@ -50,6 +50,7 @@ export const PresentationLogo: React.FC<{ outroStart: number; }> = ({outroStart}
                 top: 22,
                 left: 22,
                 height: 70,
+                zIndex: 1000,
                 opacity: enterOpacity * exitOpacity,
                 transform: `translateX(${enterX + exitX}px)`,
                 filter: `drop-shadow(0 0 ${glow}px rgba(0,0,0,0.35))`,
